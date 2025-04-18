@@ -979,7 +979,7 @@
 
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/authContext";
-import axiosInstance from "../utils/axiosInstance";
+import axiosInstance from "../utils/AxiosInstance";
 import { Link } from "react-router-dom";
 import {
   FaWallet,

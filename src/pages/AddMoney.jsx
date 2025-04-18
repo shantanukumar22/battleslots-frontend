@@ -90,7 +90,7 @@
 
 import { useState, useEffect } from "react";
 import QRCode from "react-qr-code";
-import axiosInstance from "../utils/axiosInstance";
+import axiosInstance from "../utils/AxiosInstance";
 import { toast } from "react-toastify";
 import { Wallet, Clock, RefreshCw, CreditCard, ArrowRight } from "lucide-react";
 

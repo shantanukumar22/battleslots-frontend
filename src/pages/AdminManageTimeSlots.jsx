@@ -68,7 +68,7 @@
 // export default AdminManageTimeSlots;
 
 import { useState, useEffect } from "react";
-import axiosInstance from "../utils/axiosInstance";
+import axiosInstance from "../utils/AxiosInstance";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 

@@ -325,7 +325,7 @@
 // export default RequestPayout;
 
 import { useState, useEffect } from "react";
-import axiosInstance from "../utils/axiosInstance";
+import axiosInstance from "../utils/AxiosInstance";
 import { toast } from "react-toastify";
 import { Wallet, CreditCard, ArrowRight, Check, Info } from "lucide-react";
 

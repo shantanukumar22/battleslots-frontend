@@ -380,7 +380,7 @@
 // export default Profile;
 
 import { useState, useEffect } from "react";
-import axiosInstance from "../utils/axiosInstance";
+import axiosInstance from "../utils/AxiosInstance";
 import { toast } from "react-toastify";
 import { User, Zap, Crosshair, Mail, Wallet, Check } from "lucide-react";
 
