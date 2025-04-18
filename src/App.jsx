@@ -439,7 +439,7 @@ import { useState, useContext } from "react";
 import Sidebar from "./components/Sidebar";
 import { FaBars } from "react-icons/fa";
 import Dashboard from "./pages/Dashboard";
-import BookSlot from "./pages/BookSlot";
+import Bookslot from "./pages/Bookslot"
 import Transactions from "./pages/Transactions";
 import Profile from "./pages/Profile";
 import PrivateRoute from "./components/PrivateRoute";
@@ -503,7 +503,7 @@ function App() {
                 path="/book"
                 element={
                   <PrivateRoute>
-                    <BookSlot />
+                    <Bookslot />
                   </PrivateRoute>
                 }
               />
