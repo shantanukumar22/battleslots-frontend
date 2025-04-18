@@ -438,8 +438,6 @@ import {
 import { useState, useContext } from "react";
 import Sidebar from "./components/Sidebar";
 import { FaBars } from "react-icons/fa";
-import { AuthContext } from "./context/AuthContext";
-
 import Dashboard from "./pages/Dashboard";
 import BookSlot from "./pages/BookSlot";
 import Transactions from "./pages/Transactions";
@@ -454,6 +452,7 @@ import AdminSlotDetails from "./pages/AdminSlotDetails";
 import AddMoney from "./pages/AddMoney";
 import AdminDeposits from "./pages/AdminDeposits";
 import RequestPayout from "./pages/RequestPayout";
+import { AuthContext } from "./context/AuthContext";
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
