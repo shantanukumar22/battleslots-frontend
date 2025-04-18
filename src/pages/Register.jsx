@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/authContext";
 import axiosInstance from "../utils/AxiosInstance";
 
 function Register() {
@@ -22,7 +22,7 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axiosInstance.post("/auth/register",{
+      await axiosInstance.post("/auth/register", {
         username,
         valorantName,
         email,

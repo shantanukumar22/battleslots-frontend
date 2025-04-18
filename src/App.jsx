@@ -452,7 +452,7 @@ import AdminSlotDetails from "./pages/AdminSlotDetails";
 import AddMoney from "./pages/AddMoney";
 import AdminDeposits from "./pages/AdminDeposits";
 import RequestPayout from "./pages/RequestPayout";
-import { AuthContext } from "./context/AuthContext.jsx";
+import { AuthContext } from "./context/authContext";
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);

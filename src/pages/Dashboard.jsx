@@ -978,7 +978,7 @@
 // export default Dashboard;
 
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/authContext";
 import axiosInstance from "../utils/axiosInstance";
 import { Link } from "react-router-dom";
 import {

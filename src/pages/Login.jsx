@@ -62,7 +62,7 @@
 // export default Login;
 import { useState, useContext, useEffect } from "react";
 import axios from "axios";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/authContext";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import axiosInstance from "../utils/AxiosInstance";
@@ -82,7 +82,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axiosInstance.post("/auth/login",  {
+      const res = await axiosInstance.post("/auth/login", {
         email,
         password,
       });
