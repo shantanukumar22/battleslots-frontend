@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axiosInstance from "../utils/axiosInstance";
 import { toast } from "react-toastify";
+import axiosInstance from "../utils/AxiosInstance";
 
 function AdminSlotDetails() {
   const { slotId } = useParams();
