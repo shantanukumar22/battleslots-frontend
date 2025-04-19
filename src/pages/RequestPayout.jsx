@@ -424,7 +424,7 @@ function RequestPayout() {
         {/* Card container */}
         <div className="bg-gradient-to-b from-gray-800 to-gray-900 rounded-xl shadow-2xl border border-gray-700 overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-indigo-700 to-blue-600 px-6 py-4 flex items-center">
+          <div className="bg-red-600 px-6 py-4 flex items-center">
             <Wallet className="text-white mr-2" size={24} />
             <h2 className="text-white text-2xl font-bold">Request Payout</h2>
           </div>
@@ -538,7 +538,7 @@ function RequestPayout() {
             <button
               onClick={handleRequestPayout}
               disabled={loading || (isUpiRequired && !upiId)}
-              className="mt-5 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors disabled:opacity-60"
+              className="mt-5 w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors disabled:opacity-60"
             >
               {loading ? (
                 <svg

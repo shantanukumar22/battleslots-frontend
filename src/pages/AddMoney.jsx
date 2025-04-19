@@ -437,7 +437,7 @@ function AddMoney() {
     <div className="min-h-screen bg-gray-900 py-8 px-4">
       <div className="max-w-md mx-auto">
         <div className="bg-gradient-to-b from-gray-800 to-gray-900 rounded-xl shadow-2xl border border-gray-700 overflow-hidden">
-          <div className="bg-gradient-to-r from-green-600 to-teal-600 px-6 py-4 flex items-center justify-between">
+          <div className="bg-red-600 px-6 py-4 flex items-center justify-between">
             <div className="flex items-center">
               <Wallet className="text-white mr-2" size={24} />
               <h2 className="text-white text-2xl font-bold">Add Money</h2>
@@ -487,7 +487,7 @@ function AddMoney() {
 
                 <button
                   onClick={handleGenerateQR}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors"
+                  className="w-full bg-red-600 text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors"
                 >
                   <CreditCard size={18} />
                   <span>Generate Payment QR</span>
@@ -536,7 +536,7 @@ function AddMoney() {
                 <button
                   onClick={handleSubmitAfterPayment}
                   disabled={loading}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors"
+                  className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors"
                 >
                   {loading ? (
                     "Processing..."

@@ -147,7 +147,7 @@ function Sidebar({ menuOpen, setMenuOpen }) {
 
   const linkClass = (path) =>
     pathname === path
-      ? "bg-indigo-600 text-white p-3 rounded-lg flex items-center space-x-3"
+      ? "bg-red-600 text-white p-3 rounded-lg flex items-center space-x-3"
       : "hover:bg-gray-700 text-gray-300 p-3 rounded-lg flex items-center space-x-3 transition-colors duration-200";
 
   return (
