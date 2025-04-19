@@ -224,7 +224,7 @@ function Sidebar({ menuOpen, setMenuOpen }) {
               <FaCreditCard size={18} />
               <span>Add Money</span>
             </Link>
-            <Link
+            {/* <Link
               to="/leaderboard"
               className="flex items-center justify-between bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 p-4 rounded-xl transition-all duration-300 group"
             >
@@ -233,7 +233,7 @@ function Sidebar({ menuOpen, setMenuOpen }) {
                 <span className="ml-3 font-medium">Leaderboard</span>
               </div>
               <FaArrowAltCircleRight className="transform group-hover:translate-x-1 transition-transform" />
-            </Link>
+            </Link> */}
           </nav>
 
           {/* Admin Section */}
