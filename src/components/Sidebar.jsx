@@ -448,6 +448,7 @@ function Sidebar({ menuOpen, setMenuOpen }) {
               <FaMoneyBillWave size={16} />
               <span>Request Payout</span>
             </Link>
+
             <Link
               to="/add-money"
               onClick={handleLinkClick}
@@ -455,6 +456,14 @@ function Sidebar({ menuOpen, setMenuOpen }) {
             >
               <FaCreditCard size={16} />
               <span>Add Money</span>
+            </Link>
+            <Link
+              to="/help-policies"
+              onClick={handleLinkClick}
+              className={linkClass("/help-policies")}
+            >
+              <FaMoneyBillWave size={16} />
+              <span>help</span>
             </Link>
           </nav>
 

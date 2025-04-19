@@ -263,7 +263,7 @@ function Login() {
       <div className="mt-8 text-center">
         <p className="text-gray-400 text-sm">
           Need help? Contact{" "}
-          <span className="text-red-400">battleslots@gmail.com</span>
+          <span className="text-red-400">battleslotsofficial@gmail.com</span>
         </p>
         <p className="text-gray-500 text-xs mt-2">
           © 2025 BattleSlot All rights reserved.

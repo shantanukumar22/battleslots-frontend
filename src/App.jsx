@@ -453,6 +453,7 @@ import AddMoney from "./pages/AddMoney";
 import AdminDeposits from "./pages/AdminDeposits";
 import RequestPayout from "./pages/RequestPayout";
 import { AuthContext } from "./context/authContext";
+import HelpAndPolicies from "./pages/HelpAndPolicies";
 // import Leaderboard from "./pages/Leaderboard";
 
 function App() {
@@ -528,6 +529,14 @@ function App() {
                 element={
                   <PrivateRoute>
                     <Bookslot />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/help-policies"
+                element={
+                  <PrivateRoute>
+                    <HelpAndPolicies />
                   </PrivateRoute>
                 }
               />
