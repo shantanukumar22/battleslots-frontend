@@ -453,6 +453,7 @@ import AddMoney from "./pages/AddMoney";
 import AdminDeposits from "./pages/AdminDeposits";
 import RequestPayout from "./pages/RequestPayout";
 import { AuthContext } from "./context/authContext";
+import Leaderboard from "./pages/Leaderboard";
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -496,6 +497,14 @@ function App() {
                 element={
                   <PrivateRoute>
                     <Dashboard />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/leaderboard"
+                element={
+                  <PrivateRoute>
+                    <Leaderboard />
                   </PrivateRoute>
                 }
               />

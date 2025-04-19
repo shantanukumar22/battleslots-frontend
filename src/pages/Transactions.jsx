@@ -212,7 +212,7 @@ function Transactions() {
                   .filter(
                     (txn) =>
                       txn.type === "deposit" &&
-                      txn.status.toLowerCase() === "completed"
+                      txn.status.toLowerCase() === "success"
                   )
                   .reduce((total, txn) => total + txn.amount, 0)
                   .toFixed(2)}
@@ -231,7 +231,7 @@ function Transactions() {
                   .filter(
                     (txn) =>
                       txn.type === "prize" &&
-                      txn.status.toLowerCase() === "completed"
+                      txn.status.toLowerCase() === "success"
                   )
                   .reduce((total, txn) => total + txn.amount, 0)
                   .toFixed(2)}
@@ -250,7 +250,7 @@ function Transactions() {
                   .filter(
                     (txn) =>
                       txn.type === "booking" &&
-                      txn.status.toLowerCase() === "completed"
+                      txn.status.toLowerCase() === "success"
                   )
                   .reduce((total, txn) => total + txn.amount, 0)
                   .toFixed(2)}

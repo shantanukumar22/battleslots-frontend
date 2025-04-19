@@ -132,6 +132,7 @@ import {
   FaCalendarCheck,
   FaTachometerAlt,
   FaTimes,
+  FaArrowAltCircleRight,
 } from "react-icons/fa";
 
 function Sidebar({ menuOpen, setMenuOpen }) {
@@ -222,6 +223,16 @@ function Sidebar({ menuOpen, setMenuOpen }) {
             >
               <FaCreditCard size={18} />
               <span>Add Money</span>
+            </Link>
+            <Link
+              to="/leaderboard"
+              className="flex items-center justify-between bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 p-4 rounded-xl transition-all duration-300 group"
+            >
+              <div className="flex items-center">
+                🏆
+                <span className="ml-3 font-medium">Leaderboard</span>
+              </div>
+              <FaArrowAltCircleRight className="transform group-hover:translate-x-1 transition-transform" />
             </Link>
           </nav>
 
