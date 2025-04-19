@@ -1002,6 +1002,30 @@ function Dashboard() {
   const [userDetails, setUserDetails] = useState(null);
   const [bookedSlots, setBookedSlots] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [transactions, setTransactions] = useState([]);
+  const [prizeTotal, setPrizeTotal] = useState(0);
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        const res = await axiosInstance.get("/transactions/my");
+        setTransactions(res.data);
+
+        const totalPrize = res.data
+          .filter(
+            (txn) =>
+              txn.type === "prize" && txn.status.toLowerCase() === "success"
+          )
+          .reduce((total, txn) => total + txn.amount, 0);
+
+        setPrizeTotal(totalPrize);
+      } catch (err) {
+        console.error("Error fetching transactions:", err);
+      }
+    };
+
+    fetchTransactions();
+  }, []);
 
   const bannerImages = [
     "https://i.pinimg.com/736x/5b/37/3d/5b373d08aa8828f3f17b3e7a98094d45.jpg",
@@ -1218,7 +1242,7 @@ function Dashboard() {
               <FaGamepad size={24} className="text-indigo-400" />
             </div>
             <div className="ml-4">
-              <p className="text-gray-300 text-sm">Total Matches</p>
+              <p className="text-gray-300 text-sm">Booked Matches</p>
               <h3 className="text-2xl font-bold text-white">
                 {bookedSlots.length}
               </h3>
@@ -1238,7 +1262,9 @@ function Dashboard() {
             </div>
             <div className="ml-4">
               <p className="text-gray-300 text-sm">Prizes Won</p>
-              <h3 className="text-2xl font-bold text-white">₹0.00</h3>
+              <h3 className="text-2xl font-bold text-white">
+                ₹{prizeTotal.toFixed(2)}
+              </h3>{" "}
             </div>
             <div className="ml-auto bg-yellow-600 hover:bg-yellow-700 rounded-lg p-2">
               <FaBolt size={18} />

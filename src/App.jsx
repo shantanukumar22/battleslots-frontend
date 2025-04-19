@@ -487,7 +487,22 @@ function App() {
             >
               <FaBars size={20} />
             </button>
-            <h1 className="text-white font-semibold text-xl ml-4">ValoPlay</h1>
+            <div className="flex items-center justify-start w-full">
+              {/* Logo with Battle Slots text */}
+              <div className="flex items-center">
+                <img
+                  src="/logo1.png"
+                  alt="ValoPlay Logo"
+                  className="h-6 w-auto"
+                />
+                <div className="ml-2 font-bold text-white text-xl">
+                  <span className="text-purple-400">B</span>attle
+                  <span className="text-white">
+                    <span className="text-purple-400">S</span>lots
+                  </span>
+                </div>
+              </div>
+            </div>{" "}
           </div>
 
           <div className="flex-1 overflow-y-auto ">
