@@ -977,6 +977,456 @@
 
 // export default Dashboard;
 
+// import { useContext, useEffect, useState } from "react";
+// import { AuthContext } from "../context/authContext";
+// import axiosInstance from "../utils/AxiosInstance";
+// import { Link } from "react-router-dom";
+// import {
+//   FaWallet,
+//   FaGamepad,
+//   FaTrophy,
+//   FaPlusCircle,
+//   FaChevronLeft,
+//   FaChevronRight,
+//   FaCalendarAlt,
+//   FaUserCircle,
+//   FaRegClock,
+//   FaUsers,
+//   FaArrowRight,
+//   FaBolt,
+// } from "react-icons/fa";
+
+// function Dashboard() {
+//   const { user } = useContext(AuthContext);
+//   const [walletBalance, setWalletBalance] = useState(0);
+//   const [userDetails, setUserDetails] = useState(null);
+//   const [bookedSlots, setBookedSlots] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [transactions, setTransactions] = useState([]);
+//   const [prizeTotal, setPrizeTotal] = useState(0);
+
+//   useEffect(() => {
+//     const fetchTransactions = async () => {
+//       try {
+//         const res = await axiosInstance.get("/transactions/my");
+//         setTransactions(res.data);
+
+//         const totalPrize = res.data
+//           .filter(
+//             (txn) =>
+//               txn.type === "prize" && txn.status.toLowerCase() === "success"
+//           )
+//           .reduce((total, txn) => total + txn.amount, 0);
+
+//         setPrizeTotal(totalPrize);
+//       } catch (err) {
+//         console.error("Error fetching transactions:", err);
+//       }
+//     };
+
+//     fetchTransactions();
+//   }, []);
+
+//   const bannerImages = [
+//     "https://i.pinimg.com/736x/5b/37/3d/5b373d08aa8828f3f17b3e7a98094d45.jpg",
+//     "https://i.pinimg.com/736x/8d/79/ea/8d79ea25e29ebc75b7b90f3ad84f7acb.jpg",
+//     "https://i.pinimg.com/736x/90/95/62/9095625b11bcf0ec36e4ba83464ad12d.jpg",
+//   ];
+
+//   const [currentSlide, setCurrentSlide] = useState(0);
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       setLoading(true);
+//       try {
+//         const [walletRes, userRes, slotsRes] = await Promise.all([
+//           axiosInstance.get("/wallet/balance"),
+//           axiosInstance.get("/users/me"),
+//           axiosInstance.get("/timeslots/my-slots"),
+//         ]);
+
+//         setWalletBalance(walletRes.data.balance);
+//         setUserDetails(userRes.data);
+//         setBookedSlots(slotsRes.data);
+//       } catch (err) {
+//         console.log("Error fetching dashboard data:", err);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchData();
+
+//     const interval = setInterval(() => {
+//       setCurrentSlide((prev) => (prev + 1) % bannerImages.length);
+//     }, 5000);
+
+//     return () => clearInterval(interval);
+//   }, [user]);
+
+//   const nextSlide = () =>
+//     setCurrentSlide((prev) => (prev + 1) % bannerImages.length);
+//   const prevSlide = () =>
+//     setCurrentSlide((prev) =>
+//       prev === 0 ? bannerImages.length - 1 : prev - 1
+//     );
+
+//   // Format date for better display
+//   // Format date for better display - with error handling
+
+//   const formatDateTime = (date, time) => {
+//     const matchDate = new Date(date);
+//     const [hours, minutes] = time.split(":");
+
+//     matchDate.setHours(hours);
+//     matchDate.setMinutes(minutes);
+
+//     return matchDate.toLocaleString("en-US", {
+//       weekday: "long",
+//       month: "short",
+//       day: "numeric",
+//       hour: "2-digit",
+//       minute: "2-digit",
+//     });
+//   };
+//   if (loading) {
+//     return (
+//       <div className="min-h-screen flex items-center justify-center bg-gray-900">
+//         <div className="animate-pulse flex flex-col items-center">
+//           <div className="w-16 h-16 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+//           <p className="mt-4 text-indigo-400 font-semibold">
+//             Loading your gaming hub...
+//           </p>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className="p-4 md:p-6 bg-gradient-to-br from-gray-900 to-black text-white space-y-8">
+//       {/* Welcome Header */}
+//       <div className="flex flex-col md:flex-row justify-between items-center">
+//         <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-500">
+//           Welcome back, {userDetails?.username || "Gamer"}!
+//         </h1>
+//         <div className="flex items-center space-x-2 bg-gray-800 bg-opacity-50 px-4 py-2 rounded-full mt-4 md:mt-0">
+//           <FaCalendarAlt className="text-indigo-400" />
+//           <span>
+//             {new Date().toLocaleDateString("en-US", {
+//               weekday: "long",
+//               month: "long",
+//               day: "numeric",
+//             })}
+//           </span>
+//         </div>
+//       </div>
+
+//       {/* Banner Carousel */}
+//       <div className="relative rounded-2xl overflow-hidden shadow-lg group">
+//         <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60 z-10"></div>
+//         <img
+//           src={bannerImages[currentSlide]}
+//           alt="Valorant Banner"
+//           className="w-full h-64 md:h-80 object-cover transition-all duration-1000 transform group-hover:scale-105"
+//         />
+
+//         <div className="absolute bottom-0 left-0 right-0 z-20 p-6">
+//           <h2 className="text-3xl font-bold text-white drop-shadow-lg">
+//             ValoPlay Tournament
+//           </h2>
+//           <p className="text-gray-200 drop-shadow-md">
+//             Join our exclusive gaming sessions and win exciting prizes!
+//           </p>
+//           <Link
+//             to="/book"
+//             className="mt-4 inline-flex items-center bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-2 rounded-lg transition-all duration-300 transform hover:translate-x-1"
+//           >
+//             Book Now <FaArrowRight className="ml-2" />
+//           </Link>
+//         </div>
+
+//         <button
+//           onClick={prevSlide}
+//           className="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-60 hover:bg-opacity-80 rounded-full p-3 text-white transition-all duration-300 z-20 opacity-70 hover:opacity-100"
+//         >
+//           <FaChevronLeft size={18} />
+//         </button>
+//         <button
+//           onClick={nextSlide}
+//           className="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-60 hover:bg-opacity-80 rounded-full p-3 text-white transition-all duration-300 z-20 opacity-70 hover:opacity-100"
+//         >
+//           <FaChevronRight size={18} />
+//         </button>
+
+//         {/* Carousel Indicators */}
+//         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+//           {bannerImages.map((_, index) => (
+//             <button
+//               key={index}
+//               onClick={() => setCurrentSlide(index)}
+//               className={`w-2 h-2 rounded-full transition-all duration-300 ${
+//                 currentSlide === index ? "w-6 bg-indigo-500" : "bg-gray-400"
+//               }`}
+//             />
+//           ))}
+//         </div>
+//       </div>
+
+//       {/* Dashboard Stats Grid */}
+//       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+//         {/* Profile Card */}
+//         {userDetails && (
+//           <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl shadow-xl overflow-hidden">
+//             <div className="h-24 bg-gradient-to-r from-indigo-600 to-purple-600"></div>
+//             <div className="relative px-6 pb-6">
+//               <div className="absolute -top-12 left-6 w-24 h-24 rounded-xl overflow-hidden border-4 border-gray-800 shadow-xl">
+//                 <img
+//                   src={
+//                     userDetails.profilePic ||
+//                     "https://api.dicebear.com/7.x/adventurer-neutral/svg"
+//                   }
+//                   alt="Profile"
+//                   className="w-full h-full object-cover"
+//                 />
+//               </div>
+//               <div className="pt-14">
+//                 <h3 className="text-2xl font-bold text-white">
+//                   {userDetails.username}
+//                 </h3>
+//                 <p className="text-indigo-400 flex items-center mt-1">
+//                   <FaGamepad className="mr-2" /> {userDetails.valorantName}
+//                 </p>
+//                 <p className="text-gray-400 mt-3 text-sm">
+//                   {userDetails.email}
+//                 </p>
+//                 <p className="text-gray-400 text-sm flex items-center">
+//                   <FaWallet className="mr-2" /> UPI:{" "}
+//                   {userDetails.upiId || "Not set"}
+//                 </p>
+
+//                 <Link
+//                   to="/profile"
+//                   className="mt-4 inline-flex items-center text-indigo-400 hover:text-indigo-300 text-sm font-medium"
+//                 >
+//                   Edit Profile <FaArrowRight className="ml-1 text-xs" />
+//                 </Link>
+//               </div>
+//             </div>
+//           </div>
+//         )}
+
+//         {/* Stats Cards */}
+//         <div className="grid grid-cols-1 gap-6">
+//           {/* Wallet Balance */}
+//           <div className="bg-gradient-to-br from-emerald-900 to-green-900 p-6 rounded-2xl shadow-xl flex items-center">
+//             <div className="p-4 bg-emerald-700 bg-opacity-30 rounded-xl">
+//               <FaWallet size={24} className="text-emerald-400" />
+//             </div>
+//             <div className="ml-4">
+//               <p className="text-gray-300 text-sm">Current Balance</p>
+//               <h3 className="text-2xl font-bold text-white">
+//                 ₹{walletBalance.toFixed(2)}
+//               </h3>
+//             </div>
+//             <Link
+//               to="/add-money"
+//               className="ml-auto bg-emerald-600 hover:bg-emerald-700 rounded-lg p-2"
+//             >
+//               <FaPlusCircle size={18} />
+//             </Link>
+//           </div>
+
+//           {/* Matches */}
+//           <div className="bg-gradient-to-br from-indigo-900 to-blue-900 p-6 rounded-2xl shadow-xl flex items-center">
+//             <div className="p-4 bg-indigo-700 bg-opacity-30 rounded-xl">
+//               <FaGamepad size={24} className="text-indigo-400" />
+//             </div>
+//             <div className="ml-4">
+//               <p className="text-gray-300 text-sm">Booked Matches</p>
+//               <h3 className="text-2xl font-bold text-white">
+//                 {bookedSlots.length}
+//               </h3>
+//             </div>
+//             <Link
+//               to="/transactions"
+//               className="ml-auto bg-indigo-600 hover:bg-indigo-700 rounded-lg p-2"
+//             >
+//               <FaArrowRight size={18} />
+//             </Link>
+//           </div>
+
+//           {/* Prizes */}
+//           <div className="bg-gradient-to-br from-yellow-800 to-amber-900 p-6 rounded-2xl shadow-xl flex items-center">
+//             <div className="p-4 bg-yellow-700 bg-opacity-30 rounded-xl">
+//               <FaTrophy size={24} className="text-yellow-400" />
+//             </div>
+//             <div className="ml-4">
+//               <p className="text-gray-300 text-sm">Prizes Won</p>
+//               <h3 className="text-2xl font-bold text-white">
+//                 ₹{prizeTotal.toFixed(2)}
+//               </h3>{" "}
+//             </div>
+//             <div className="ml-auto bg-yellow-600 hover:bg-yellow-700 rounded-lg p-2">
+//               <FaBolt size={18} />
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Quick Actions */}
+//         <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl shadow-xl p-6">
+//           <h3 className="text-xl font-bold mb-4 flex items-center">
+//             <FaBolt className="text-indigo-400 mr-2" /> Quick Actions
+//           </h3>
+//           <div className="space-y-3">
+//             <Link
+//               to="/book"
+//               className="flex items-center justify-between bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 p-4 rounded-xl transition-all duration-300 group"
+//             >
+//               <div className="flex items-center">
+//                 <FaGamepad className="mr-3" />
+//                 <span className="font-medium">Book Slot</span>
+//               </div>
+//               <FaArrowRight className="transform group-hover:translate-x-1 transition-transform" />
+//             </Link>
+
+//             <Link
+//               to="/add-money"
+//               className="flex items-center justify-between bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 p-4 rounded-xl transition-all duration-300 group"
+//             >
+//               <div className="flex items-center">
+//                 <FaPlusCircle className="mr-3" />
+//                 <span className="font-medium">Add Money</span>
+//               </div>
+//               <FaArrowRight className="transform group-hover:translate-x-1 transition-transform" />
+//             </Link>
+
+//             <Link
+//               to="/transactions"
+//               className="flex items-center justify-between bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 p-4 rounded-xl transition-all duration-300 group"
+//             >
+//               <div className="flex items-center">
+//                 <FaWallet className="mr-3" />
+//                 <span className="font-medium">Transactions</span>
+//               </div>
+//               <FaArrowRight className="transform group-hover:translate-x-1 transition-transform" />
+//             </Link>
+
+//             <Link
+//               to="/request-payout"
+//               className="flex items-center justify-between bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 p-4 rounded-xl transition-all duration-300 group"
+//             >
+//               <div className="flex items-center">
+//                 <FaWallet className="mr-3" />
+//                 <span className="font-medium">Request Payout</span>
+//               </div>
+//               <FaArrowRight className="transform group-hover:translate-x-1 transition-transform" />
+//             </Link>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Upcoming Booked Slots */}
+//       <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl shadow-xl p-6">
+//         <div className="flex justify-between items-center mb-6">
+//           <h3 className="text-2xl font-bold flex items-center">
+//             <FaCalendarAlt className="text-indigo-400 mr-2" /> Upcoming Matches
+//           </h3>
+//           {bookedSlots.length > 3 && (
+//             <Link
+//               to="/book"
+//               className="text-indigo-400 hover:text-indigo-300 flex items-center text-sm font-medium"
+//             >
+//               View all <FaArrowRight className="ml-1" />
+//             </Link>
+//           )}
+//         </div>
+
+//         {bookedSlots.length > 0 ? (
+//           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+//             {bookedSlots
+//               .slice()
+//               .reverse()
+//               .slice(0, 10)
+//               .map((slot) => (
+//                 <div
+//                   key={slot._id}
+//                   className="bg-gray-800 bg-opacity-50 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group"
+//                 >
+//                   <div className="bg-gradient-to-r from-indigo-600 to-indigo-700 p-3 flex justify-between items-center">
+//                     <div className="flex items-center">
+//                       <FaRegClock className="mr-2" />
+//                       <span className="font-medium">
+//                         {formatDateTime(slot.date, slot.time)}
+//                       </span>{" "}
+//                     </div>
+//                     <span className="bg-indigo-900 py-1 px-2 rounded-full text-xs">
+//                       {new Date(slot.date + "T" + slot.time) > new Date()
+//                         ? "Upcoming"
+//                         : "Active"}
+//                     </span>
+//                   </div>
+
+//                   <div className="p-4 space-y-3">
+//                     <div className="flex items-center text-gray-300">
+//                       <FaUsers className="mr-2 text-indigo-400" />
+//                       <span>{slot.players.length}/10 Players Joined</span>
+//                     </div>
+//                     <div className="w-full bg-gray-700 rounded-full h-2">
+//                       <div
+//                         className="bg-indigo-500 h-2 rounded-full"
+//                         style={{
+//                           width: `${(slot.players.length / 10) * 100}%`,
+//                         }}
+//                       ></div>
+//                     </div>
+//                     {/* Show Room Code if it exists */}
+//                     {slot.roomCode && (
+//                       <div className="text-center text-sm text-gray-400 mt-2">
+//                         <p>
+//                           Room Code:{" "}
+//                           <span className="font-semibold text-indigo-400">
+//                             {slot.roomCode}
+//                           </span>
+//                         </p>
+//                       </div>
+//                     )}
+//                     <Link
+//                       to={`/admin/slots/${slot._id}`}
+//                       className="mt-3 inline-block w-full bg-gray-700 hover:bg-indigo-600 p-2 rounded-lg font-medium text-center transition-colors duration-300 group-hover:bg-indigo-600"
+//                     >
+//                       View Details
+//                     </Link>
+//                   </div>
+//                 </div>
+//               ))}
+//           </div>
+//         ) : (
+//           <div className="bg-gray-800 bg-opacity-40 rounded-xl p-8 text-center">
+//             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-700 mb-4">
+//               <FaCalendarAlt size={24} className="text-gray-400" />
+//             </div>
+//             <h4 className="text-xl font-medium text-gray-300">
+//               No Upcoming Matches
+//             </h4>
+//             <p className="text-gray-500 mt-2">
+//               You don't have any upcoming matches scheduled.
+//             </p>
+//             <Link
+//               to="/book"
+//               className="mt-6 inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-lg font-medium transition-colors duration-300"
+//             >
+//               Book Your First Slot <FaArrowRight className="ml-2" />
+//             </Link>
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default Dashboard;
+
+// !claude
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/authContext";
 import axiosInstance from "../utils/AxiosInstance";
@@ -998,13 +1448,79 @@ import {
 
 function Dashboard() {
   const { user } = useContext(AuthContext);
+
+  // State for each section with separate loading states
   const [walletBalance, setWalletBalance] = useState(0);
   const [userDetails, setUserDetails] = useState(null);
   const [bookedSlots, setBookedSlots] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [transactions, setTransactions] = useState([]);
   const [prizeTotal, setPrizeTotal] = useState(0);
 
+  // Section-specific loading states
+  const [loadingProfile, setLoadingProfile] = useState(true);
+  const [loadingWallet, setLoadingWallet] = useState(true);
+  const [loadingSlots, setLoadingSlots] = useState(true);
+  const [loadingTransactions, setLoadingTransactions] = useState(true);
+
+  const bannerImages = [
+    "https://i.pinimg.com/736x/5b/37/3d/5b373d08aa8828f3f17b3e7a98094d45.jpg",
+    "https://i.pinimg.com/736x/8d/79/ea/8d79ea25e29ebc75b7b90f3ad84f7acb.jpg",
+    "https://i.pinimg.com/736x/90/95/62/9095625b11bcf0ec36e4ba83464ad12d.jpg",
+  ];
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Load essentials first (user profile and wallet)
+  useEffect(() => {
+    const fetchEssentialData = async () => {
+      try {
+        // Fetch user details
+        const userRes = await axiosInstance.get("/users/me");
+        setUserDetails(userRes.data);
+      } catch (err) {
+        console.log("Error fetching user details:", err);
+      } finally {
+        setLoadingProfile(false);
+      }
+
+      try {
+        // Fetch wallet balance
+        const walletRes = await axiosInstance.get("/wallet/balance");
+        setWalletBalance(walletRes.data.balance);
+      } catch (err) {
+        console.log("Error fetching wallet balance:", err);
+      } finally {
+        setLoadingWallet(false);
+      }
+    };
+
+    fetchEssentialData();
+
+    // Start carousel interval
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % bannerImages.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Load booked slots separately
+  useEffect(() => {
+    const fetchBookedSlots = async () => {
+      try {
+        const slotsRes = await axiosInstance.get("/timeslots/my-slots");
+        setBookedSlots(slotsRes.data);
+      } catch (err) {
+        console.log("Error fetching booked slots:", err);
+      } finally {
+        setLoadingSlots(false);
+      }
+    };
+
+    fetchBookedSlots();
+  }, []);
+
+  // Load transactions data last (less critical)
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
@@ -1021,48 +1537,18 @@ function Dashboard() {
         setPrizeTotal(totalPrize);
       } catch (err) {
         console.error("Error fetching transactions:", err);
-      }
-    };
-
-    fetchTransactions();
-  }, []);
-
-  const bannerImages = [
-    "https://i.pinimg.com/736x/5b/37/3d/5b373d08aa8828f3f17b3e7a98094d45.jpg",
-    "https://i.pinimg.com/736x/8d/79/ea/8d79ea25e29ebc75b7b90f3ad84f7acb.jpg",
-    "https://i.pinimg.com/736x/90/95/62/9095625b11bcf0ec36e4ba83464ad12d.jpg",
-  ];
-
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const [walletRes, userRes, slotsRes] = await Promise.all([
-          axiosInstance.get("/wallet/balance"),
-          axiosInstance.get("/users/me"),
-          axiosInstance.get("/timeslots/my-slots"),
-        ]);
-
-        setWalletBalance(walletRes.data.balance);
-        setUserDetails(userRes.data);
-        setBookedSlots(slotsRes.data);
-      } catch (err) {
-        console.log("Error fetching dashboard data:", err);
       } finally {
-        setLoading(false);
+        setLoadingTransactions(false);
       }
     };
 
-    fetchData();
+    // Add slight delay to prioritize rendering critical UI first
+    const timer = setTimeout(() => {
+      fetchTransactions();
+    }, 500);
 
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % bannerImages.length);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [user]);
+    return () => clearTimeout(timer);
+  }, []);
 
   const nextSlide = () =>
     setCurrentSlide((prev) => (prev + 1) % bannerImages.length);
@@ -1072,35 +1558,25 @@ function Dashboard() {
     );
 
   // Format date for better display
-  // Format date for better display - with error handling
-
   const formatDateTime = (date, time) => {
-    const matchDate = new Date(date);
-    const [hours, minutes] = time.split(":");
+    try {
+      const matchDate = new Date(date);
+      const [hours, minutes] = time.split(":");
 
-    matchDate.setHours(hours);
-    matchDate.setMinutes(minutes);
+      matchDate.setHours(hours);
+      matchDate.setMinutes(minutes);
 
-    return matchDate.toLocaleString("en-US", {
-      weekday: "long",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+      return matchDate.toLocaleString("en-US", {
+        weekday: "long",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } catch (error) {
+      return "Date unavailable";
+    }
   };
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-900">
-        <div className="animate-pulse flex flex-col items-center">
-          <div className="w-16 h-16 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="mt-4 text-indigo-400 font-semibold">
-            Loading your gaming hub...
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="p-4 md:p-6 bg-gradient-to-br from-gray-900 to-black text-white space-y-8">
@@ -1175,45 +1651,83 @@ function Dashboard() {
       {/* Dashboard Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Profile Card */}
-        {userDetails && (
-          <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl shadow-xl overflow-hidden">
-            <div className="h-24 bg-gradient-to-r from-indigo-600 to-purple-600"></div>
-            <div className="relative px-6 pb-6">
-              <div className="absolute -top-12 left-6 w-24 h-24 rounded-xl overflow-hidden border-4 border-gray-800 shadow-xl">
-                <img
-                  src={
-                    userDetails.profilePic ||
-                    "https://api.dicebear.com/7.x/adventurer-neutral/svg"
-                  }
-                  alt="Profile"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="pt-14">
-                <h3 className="text-2xl font-bold text-white">
-                  {userDetails.username}
-                </h3>
-                <p className="text-indigo-400 flex items-center mt-1">
-                  <FaGamepad className="mr-2" /> {userDetails.valorantName}
-                </p>
-                <p className="text-gray-400 mt-3 text-sm">
-                  {userDetails.email}
-                </p>
-                <p className="text-gray-400 text-sm flex items-center">
-                  <FaWallet className="mr-2" /> UPI:{" "}
-                  {userDetails.upiId || "Not set"}
-                </p>
-
-                <Link
-                  to="/profile"
-                  className="mt-4 inline-flex items-center text-indigo-400 hover:text-indigo-300 text-sm font-medium"
-                >
-                  Edit Profile <FaArrowRight className="ml-1 text-xs" />
-                </Link>
+        <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl shadow-xl overflow-hidden">
+          {loadingProfile ? (
+            <div className="animate-pulse">
+              <div className="h-24 bg-gradient-to-r from-indigo-600 to-purple-600 opacity-50"></div>
+              <div className="relative px-6 pb-6">
+                <div className="absolute -top-12 left-6 w-24 h-24 rounded-xl overflow-hidden border-4 border-gray-800 bg-gray-700"></div>
+                <div className="pt-14 space-y-3">
+                  <div className="h-6 bg-gray-700 rounded w-1/2"></div>
+                  <div className="h-4 bg-gray-700 rounded w-3/4"></div>
+                  <div className="h-4 bg-gray-700 rounded w-2/3"></div>
+                  <div className="h-4 bg-gray-700 rounded w-1/2"></div>
+                  <div className="h-8 bg-gray-700 rounded w-1/3 mt-2"></div>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          ) : userDetails ? (
+            <>
+              <div className="h-24 bg-gradient-to-r from-indigo-600 to-purple-600"></div>
+              <div className="relative px-6 pb-6">
+                <div className="absolute -top-12 left-6 w-24 h-24 rounded-xl overflow-hidden border-4 border-gray-800 shadow-xl">
+                  <img
+                    src={
+                      userDetails.profilePic ||
+                      "https://api.dicebear.com/7.x/adventurer-neutral/svg"
+                    }
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="pt-14">
+                  <h3 className="text-2xl font-bold text-white">
+                    {userDetails.username}
+                  </h3>
+                  <p className="text-indigo-400 flex items-center mt-1">
+                    <FaGamepad className="mr-2" /> {userDetails.valorantName}
+                  </p>
+                  <p className="text-gray-400 mt-3 text-sm">
+                    {userDetails.email}
+                  </p>
+                  <p className="text-gray-400 text-sm flex items-center">
+                    <FaWallet className="mr-2" /> UPI:{" "}
+                    {userDetails.upiId || "Not set"}
+                  </p>
+
+                  <Link
+                    to="/profile"
+                    className="mt-4 inline-flex items-center text-indigo-400 hover:text-indigo-300 text-sm font-medium"
+                  >
+                    Edit Profile <FaArrowRight className="ml-1 text-xs" />
+                  </Link>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="p-6 text-center">
+              <p>Failed to load profile information</p>
+              <button
+                onClick={() => {
+                  setLoadingProfile(true);
+                  axiosInstance
+                    .get("/users/me")
+                    .then((res) => {
+                      setUserDetails(res.data);
+                      setLoadingProfile(false);
+                    })
+                    .catch((err) => {
+                      console.error(err);
+                      setLoadingProfile(false);
+                    });
+                }}
+                className="mt-2 text-indigo-400 hover:text-indigo-300"
+              >
+                Retry
+              </button>
+            </div>
+          )}
+        </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 gap-6">
@@ -1222,12 +1736,19 @@ function Dashboard() {
             <div className="p-4 bg-emerald-700 bg-opacity-30 rounded-xl">
               <FaWallet size={24} className="text-emerald-400" />
             </div>
-            <div className="ml-4">
-              <p className="text-gray-300 text-sm">Current Balance</p>
-              <h3 className="text-2xl font-bold text-white">
-                ₹{walletBalance.toFixed(2)}
-              </h3>
-            </div>
+            {loadingWallet ? (
+              <div className="ml-4 flex-1 animate-pulse">
+                <div className="h-4 bg-emerald-700 bg-opacity-50 rounded w-24"></div>
+                <div className="h-6 bg-emerald-700 bg-opacity-50 rounded w-20 mt-1"></div>
+              </div>
+            ) : (
+              <div className="ml-4">
+                <p className="text-gray-300 text-sm">Current Balance</p>
+                <h3 className="text-2xl font-bold text-white">
+                  ₹{walletBalance.toFixed(2)}
+                </h3>
+              </div>
+            )}
             <Link
               to="/add-money"
               className="ml-auto bg-emerald-600 hover:bg-emerald-700 rounded-lg p-2"
@@ -1241,12 +1762,19 @@ function Dashboard() {
             <div className="p-4 bg-indigo-700 bg-opacity-30 rounded-xl">
               <FaGamepad size={24} className="text-indigo-400" />
             </div>
-            <div className="ml-4">
-              <p className="text-gray-300 text-sm">Booked Matches</p>
-              <h3 className="text-2xl font-bold text-white">
-                {bookedSlots.length}
-              </h3>
-            </div>
+            {loadingSlots ? (
+              <div className="ml-4 flex-1 animate-pulse">
+                <div className="h-4 bg-indigo-700 bg-opacity-50 rounded w-24"></div>
+                <div className="h-6 bg-indigo-700 bg-opacity-50 rounded w-12 mt-1"></div>
+              </div>
+            ) : (
+              <div className="ml-4">
+                <p className="text-gray-300 text-sm">Booked Matches</p>
+                <h3 className="text-2xl font-bold text-white">
+                  {bookedSlots.length}
+                </h3>
+              </div>
+            )}
             <Link
               to="/transactions"
               className="ml-auto bg-indigo-600 hover:bg-indigo-700 rounded-lg p-2"
@@ -1260,12 +1788,19 @@ function Dashboard() {
             <div className="p-4 bg-yellow-700 bg-opacity-30 rounded-xl">
               <FaTrophy size={24} className="text-yellow-400" />
             </div>
-            <div className="ml-4">
-              <p className="text-gray-300 text-sm">Prizes Won</p>
-              <h3 className="text-2xl font-bold text-white">
-                ₹{prizeTotal.toFixed(2)}
-              </h3>{" "}
-            </div>
+            {loadingTransactions ? (
+              <div className="ml-4 flex-1 animate-pulse">
+                <div className="h-4 bg-yellow-700 bg-opacity-50 rounded w-24"></div>
+                <div className="h-6 bg-yellow-700 bg-opacity-50 rounded w-20 mt-1"></div>
+              </div>
+            ) : (
+              <div className="ml-4">
+                <p className="text-gray-300 text-sm">Prizes Won</p>
+                <h3 className="text-2xl font-bold text-white">
+                  ₹{prizeTotal.toFixed(2)}
+                </h3>
+              </div>
+            )}
             <div className="ml-auto bg-yellow-600 hover:bg-yellow-700 rounded-lg p-2">
               <FaBolt size={18} />
             </div>
@@ -1331,7 +1866,7 @@ function Dashboard() {
           <h3 className="text-2xl font-bold flex items-center">
             <FaCalendarAlt className="text-indigo-400 mr-2" /> Upcoming Matches
           </h3>
-          {bookedSlots.length > 3 && (
+          {!loadingSlots && bookedSlots.length > 3 && (
             <Link
               to="/book"
               className="text-indigo-400 hover:text-indigo-300 flex items-center text-sm font-medium"
@@ -1341,7 +1876,25 @@ function Dashboard() {
           )}
         </div>
 
-        {bookedSlots.length > 0 ? (
+        {loadingSlots ? (
+          // Skeleton loader for slots
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {[1, 2, 3].map((item) => (
+              <div
+                key={item}
+                className="bg-gray-800 bg-opacity-50 rounded-xl overflow-hidden shadow-lg animate-pulse"
+              >
+                <div className="bg-gradient-to-r from-indigo-800 to-indigo-900 p-3 h-12"></div>
+                <div className="p-4 space-y-3">
+                  <div className="h-4 bg-gray-700 rounded w-3/4"></div>
+                  <div className="w-full bg-gray-700 rounded-full h-2"></div>
+                  <div className="h-4 bg-gray-700 rounded w-1/2 mx-auto mt-2"></div>
+                  <div className="h-8 bg-gray-700 rounded w-full mt-3"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : bookedSlots.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {bookedSlots
               .slice()
@@ -1357,7 +1910,7 @@ function Dashboard() {
                       <FaRegClock className="mr-2" />
                       <span className="font-medium">
                         {formatDateTime(slot.date, slot.time)}
-                      </span>{" "}
+                      </span>
                     </div>
                     <span className="bg-indigo-900 py-1 px-2 rounded-full text-xs">
                       {new Date(slot.date + "T" + slot.time) > new Date()
@@ -1425,192 +1978,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
-
-// <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl shadow-xl p-6">
-// <div className="flex justify-between items-center mb-6">
-//   <h3 className="text-2xl font-bold flex items-center">
-//     <FaCalendarAlt className="text-indigo-400 mr-2" /> Upcoming Matches
-//   </h3>
-//   {bookedSlots.length > 3 && (
-//     <Link
-//       to="/book"
-//       className="text-indigo-400 hover:text-indigo-300 flex items-center text-sm font-medium"
-//     >
-//       View all <FaArrowRight className="ml-1" />
-//     </Link>
-//   )}
-// </div>
-
-// {bookedSlots.length > 0 ? (
-//   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-//     {bookedSlots.slice(0, 3).map((slot) => (
-//       <div
-//         key={slot._id}
-//         className="bg-gray-800 bg-opacity-50 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group"
-//       >
-//         <div className="bg-gradient-to-r from-indigo-600 to-indigo-700 p-3 flex justify-between items-center">
-//           <div className="flex items-center">
-//             <FaRegClock className="mr-2" />
-//             <span className="font-medium">
-//               {formatDateTime(slot.date, slot.time)}
-//             </span>
-//           </div>
-
-//           <span className="bg-indigo-900 py-1 px-2 rounded-full text-xs">
-//             {new Date(slot.date + "T" + slot.time) > new Date()
-//               ? "Upcoming"
-//               : "Active"}
-//           </span>
-//         </div>
-
-//         <div className="p-4 space-y-3">
-//           <div className="flex items-center text-gray-300">
-//             <FaUsers className="mr-2 text-indigo-400" />
-//             <span>{slot.players.length}/10 Players Joined</span>
-//           </div>
-
-//           <div className="w-full bg-gray-700 rounded-full h-2">
-//             <div
-//               className="bg-indigo-500 h-2 rounded-full"
-//               style={{
-//                 width: `${(slot.players.length / 10) * 100}%`,
-//               }}
-//             ></div>
-//           </div>
-
-//           {/* Show Room Code if it exists */}
-//           {slot.roomCode && (
-//             <div className="text-center text-sm text-gray-400 mt-2">
-//               <p>
-//                 Room Code:{" "}
-//                 <span className="font-semibold text-indigo-400">
-//                   {slot.roomCode}
-//                 </span>
-//               </p>
-//             </div>
-//           )}
-
-//           <Link
-//             to={`/admin/slots/${slot._id}`}
-//             className="mt-3 inline-block w-full bg-gray-700 hover:bg-indigo-600 p-2 rounded-lg font-medium text-center transition-colors duration-300 group-hover:bg-indigo-600"
-//           >
-//             View Details
-//           </Link>
-//         </div>
-//       </div>
-//     ))}
-//   </div>
-// ) : (
-//   <div className="bg-gray-800 bg-opacity-40 rounded-xl p-8 text-center">
-//     <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-700 mb-4">
-//       <FaCalendarAlt size={24} className="text-gray-400" />
-//     </div>
-//     <h4 className="text-xl font-medium text-gray-300">
-//       No Upcoming Matches
-//     </h4>
-//     <p className="text-gray-500 mt-2">
-//       You don't have any upcoming matches scheduled.
-//     </p>
-//     <Link
-//       to="/book"
-//       className="mt-6 inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-lg font-medium transition-colors duration-300"
-//     >
-//       Book Your First Slot <FaArrowRight className="ml-2" />
-//     </Link>
-//   </div>
-// )}
-// </div>
-// </div>
-
-// ! bookslot
-{
-  /* Upcoming Booked Slots */
-}
-//  <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl shadow-xl p-6">
-//  <div className="flex justify-between items-center mb-6">
-//    <h3 className="text-2xl font-bold flex items-center">
-//      <FaCalendarAlt className="text-indigo-400 mr-2" /> Upcoming Matches
-//    </h3>
-//    {bookedSlots.length > 3 && (
-//      <Link
-//        to="/book"
-//        className="text-indigo-400 hover:text-indigo-300 flex items-center text-sm font-medium"
-//      >
-//        View all <FaArrowRight className="ml-1" />
-//      </Link>
-//    )}
-//  </div>
-
-//  {bookedSlots.length > 0 ? (
-//    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-//      {bookedSlots.slice(0, 3).map((slot) => (
-//        <div
-//          key={slot._id}
-//          className="bg-gray-800 bg-opacity-50 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group"
-//        >
-//          <div className="bg-gradient-to-r from-indigo-600 to-indigo-700 p-3 flex justify-between items-center">
-//            <div className="flex items-center">
-//              <FaRegClock className="mr-2" />
-//              <span className="font-medium">{formatDate(slot.time)}</span>
-//            </div>
-//            <span className="bg-indigo-900 py-1 px-2 rounded-full text-xs">
-//              {new Date(slot.time) > new Date() ? "Upcoming" : "Active"}
-//            </span>
-//          </div>
-
-//          <div className="p-4 space-y-3">
-//            <div className="flex items-center text-gray-300">
-//              <FaUsers className="mr-2 text-indigo-400" />
-//              <span>{slot.players.length}/10 Players Joined</span>
-//            </div>
-
-//            <div className="w-full bg-gray-700 rounded-full h-2">
-//              <div
-//                className="bg-indigo-500 h-2 rounded-full"
-//                style={{ width: `${(slot.players.length / 10) * 100}%` }}
-//              ></div>
-//            </div>
-
-//            {/* Show Room Code if it exists */}
-//            {slot.roomCode && (
-//              <div className="text-center text-sm text-gray-400 mt-2">
-//                <p>
-//                  Room Code:{" "}
-//                  <span className="font-semibold text-indigo-400">
-//                    {slot.roomCode}
-//                  </span>
-//                </p>
-//              </div>
-//            )}
-
-//            <Link
-//              to={`/admin/slots/${slot._id}`}
-//              className="mt-3 inline-block w-full bg-gray-700 hover:bg-indigo-600 p-2 rounded-lg font-medium text-center transition-colors duration-300 group-hover:bg-indigo-600"
-//            >
-//              View Details
-//            </Link>
-//          </div>
-//        </div>
-//      ))}
-//    </div>
-//  ) : (
-//    <div className="bg-gray-800 bg-opacity-40 rounded-xl p-8 text-center">
-//      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-700 mb-4">
-//        <FaCalendarAlt size={24} className="text-gray-400" />
-//      </div>
-//      <h4 className="text-xl font-medium text-gray-300">
-//        No Upcoming Matches
-//      </h4>
-//      <p className="text-gray-500 mt-2">
-//        You don't have any upcoming matches scheduled.
-//      </p>
-//      <Link
-//        to="/book"
-//        className="mt-6 inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-lg font-medium transition-colors duration-300"
-//      >
-//        Book Your First Slot <FaArrowRight className="ml-2" />
-//      </Link>
-//    </div>
-//  )}
-// </div>
-// </div>
