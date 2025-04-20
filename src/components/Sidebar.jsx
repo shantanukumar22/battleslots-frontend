@@ -510,14 +510,14 @@ function Sidebar({ menuOpen, setMenuOpen }) {
                     <FaMoneyBillWave size={16} />
                     <span>Payout Requests</span>
                   </Link>
-                  <Link
+                  {/* <Link
                     to="/admin/deposits"
                     onClick={handleLinkClick}
                     className={linkClass("/admin/deposits")}
                   >
                     <FaCreditCard size={16} />
                     <span>Manual Deposits</span>
-                  </Link>
+                  </Link> */}
                   <Link
                     to="/admin/create-slot"
                     onClick={handleLinkClick}

@@ -357,197 +357,319 @@
 
 // export default AddMoney;
 
-import { useState, useEffect } from "react";
-import QRCode from "react-qr-code";
+// import { useState, useEffect } from "react";
+// import QRCode from "react-qr-code";
+// import axiosInstance from "../utils/AxiosInstance";
+// import { toast } from "react-toastify";
+// import { Wallet, Clock, RefreshCw, CreditCard, ArrowRight } from "lucide-react";
+
+// function AddMoney() {
+//   const [amount, setAmount] = useState("");
+//   const [qrExpired, setQrExpired] = useState(false);
+//   const [createdAt, setCreatedAt] = useState(null);
+//   const [timeLeft, setTimeLeft] = useState(null);
+//   const [showQr, setShowQr] = useState(false);
+//   const [loading, setLoading] = useState(false);
+
+//   const quickAmounts = [100, 200, 500, 1000];
+//   const upiLink = `upi://pay?pa=shantanuk436@okaxis&pn=ValoPlay&am=${amount}&cu=INR`;
+
+//   const checkExpiration = () => {
+//     if (!createdAt) return;
+//     const expirationTime = 5 * 60 * 1000;
+//     const now = new Date().getTime();
+//     const elapsed = now - createdAt;
+
+//     if (elapsed > expirationTime) {
+//       setQrExpired(true);
+//       setTimeLeft(null);
+//     } else {
+//       setTimeLeft(Math.floor((expirationTime - elapsed) / 1000));
+//     }
+//   };
+
+//   const handleGenerateQR = () => {
+//     if (!amount || Number(amount) <= 0) {
+//       toast.error("Enter a valid amount");
+//       return;
+//     }
+//     setCreatedAt(new Date().getTime());
+//     setQrExpired(false);
+//     setShowQr(true);
+//   };
+
+//   const handleSubmitAfterPayment = async () => {
+//     if (!amount || Number(amount) <= 0) {
+//       toast.error("Invalid amount");
+//       return;
+//     }
+
+//     setLoading(true);
+//     try {
+//       await axiosInstance.post("/payments/request", { amount });
+//       toast.success("Payment request submitted. Admin will verify soon.");
+//       setAmount("");
+//       setShowQr(false);
+//     } catch (err) {
+//       toast.error("Failed to submit request.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       checkExpiration();
+//     }, 1000);
+//     return () => clearInterval(interval);
+//   }, [createdAt]);
+
+//   const formatTime = (seconds) => {
+//     if (!seconds) return "--:--";
+//     const mins = Math.floor(seconds / 60);
+//     const secs = seconds % 60;
+//     return `${mins.toString().padStart(2, "0")}:${secs
+//       .toString()
+//       .padStart(2, "0")}`;
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gray-900 py-8 px-4">
+//       <div className="max-w-md mx-auto">
+//         <div className="bg-gradient-to-b from-gray-800 to-gray-900 rounded-xl shadow-2xl border border-gray-700 overflow-hidden">
+//           <div className="bg-red-600 px-6 py-4 flex items-center justify-between">
+//             <div className="flex items-center">
+//               <Wallet className="text-white mr-2" size={24} />
+//               <h2 className="text-white text-2xl font-bold">Add Money</h2>
+//             </div>
+//             {showQr && timeLeft && (
+//               <div className="flex items-center bg-black bg-opacity-30 px-3 py-1 rounded-full">
+//                 <Clock className="text-white mr-1" size={16} />
+//                 <span className="text-white text-sm font-medium">
+//                   {formatTime(timeLeft)}
+//                 </span>
+//               </div>
+//             )}
+//           </div>
+
+//           <div className="p-6 space-y-6">
+//             {!showQr ? (
+//               <>
+//                 <div className="space-y-2">
+//                   <label className="block text-gray-400 text-sm font-medium">
+//                     Enter Amount
+//                   </label>
+//                   <div className="relative">
+//                     <span className="absolute left-3 top-3 text-gray-500 font-semibold">
+//                       ₹
+//                     </span>
+//                     <input
+//                       type="number"
+//                       value={amount}
+//                       onChange={(e) => setAmount(e.target.value)}
+//                       placeholder="0"
+//                       className="pl-8 pr-4 py-3 w-full rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-green-500 focus:ring-1 focus:ring-green-500"
+//                     />
+//                   </div>
+
+//                   <div className="grid grid-cols-4 gap-2 mt-3">
+//                     {quickAmounts.map((value) => (
+//                       <button
+//                         key={value}
+//                         onClick={() => setAmount(value.toString())}
+//                         className="bg-gray-700 hover:bg-gray-600 py-2 px-3 rounded-lg text-white font-medium transition-colors"
+//                       >
+//                         ₹{value}
+//                       </button>
+//                     ))}
+//                   </div>
+//                 </div>
+
+//                 <button
+//                   onClick={handleGenerateQR}
+//                   className="w-full bg-red-600 text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors"
+//                 >
+//                   <CreditCard size={18} />
+//                   <span>Generate Payment QR</span>
+//                 </button>
+//               </>
+//             ) : (
+//               <>
+//                 <div className="flex flex-col items-center space-y-4">
+//                   <h3 className="text-xl font-medium text-white">
+//                     Scan to Pay ₹{amount}
+//                   </h3>
+
+//                   {qrExpired ? (
+//                     <div className="text-red-500 font-medium">
+//                       QR Code expired!
+//                     </div>
+//                   ) : (
+//                     <div className="bg-white p-4 rounded-lg">
+//                       <QRCode
+//                         value={upiLink}
+//                         bgColor="#ffffff"
+//                         fgColor="#000000"
+//                         size={180}
+//                       />
+//                     </div>
+//                   )}
+
+//                   <div className="text-gray-400 text-sm text-center mt-2">
+//                     Scan with any UPI app to make payment
+//                   </div>
+//                 </div>
+
+//                 <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
+//                   <div className="grid grid-cols-2 gap-3 text-sm">
+//                     <div className="text-gray-400">UPI ID:</div>
+//                     <div className="text-white font-medium">
+//                       shantanuk436@okaxis
+//                     </div>
+//                     <div className="text-gray-400">Name:</div>
+//                     <div className="text-white font-medium">ValoPlay</div>
+//                     <div className="text-gray-400">Amount:</div>
+//                     <div className="text-white font-medium">₹{amount}</div>
+//                   </div>
+//                 </div>
+
+//                 <button
+//                   onClick={handleSubmitAfterPayment}
+//                   disabled={loading}
+//                   className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors"
+//                 >
+//                   {loading ? (
+//                     "Processing..."
+//                   ) : (
+//                     <>
+//                       I've Paid & Submit Request <ArrowRight size={18} />
+//                     </>
+//                   )}
+//                 </button>
+//               </>
+//             )}
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default AddMoney;
+
+import { useState } from "react";
 import axiosInstance from "../utils/AxiosInstance";
 import { toast } from "react-toastify";
-import { Wallet, Clock, RefreshCw, CreditCard, ArrowRight } from "lucide-react";
+import { Wallet, CreditCard } from "lucide-react";
 
 function AddMoney() {
   const [amount, setAmount] = useState("");
-  const [qrExpired, setQrExpired] = useState(false);
-  const [createdAt, setCreatedAt] = useState(null);
-  const [timeLeft, setTimeLeft] = useState(null);
-  const [showQr, setShowQr] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const quickAmounts = [100, 200, 500, 1000];
-  const upiLink = `upi://pay?pa=shantanuk436@okaxis&pn=ValoPlay&am=${amount}&cu=INR`;
 
-  const checkExpiration = () => {
-    if (!createdAt) return;
-    const expirationTime = 5 * 60 * 1000;
-    const now = new Date().getTime();
-    const elapsed = now - createdAt;
-
-    if (elapsed > expirationTime) {
-      setQrExpired(true);
-      setTimeLeft(null);
-    } else {
-      setTimeLeft(Math.floor((expirationTime - elapsed) / 1000));
-    }
-  };
-
-  const handleGenerateQR = () => {
+  const handlePayment = async () => {
     if (!amount || Number(amount) <= 0) {
-      toast.error("Enter a valid amount");
-      return;
-    }
-    setCreatedAt(new Date().getTime());
-    setQrExpired(false);
-    setShowQr(true);
-  };
-
-  const handleSubmitAfterPayment = async () => {
-    if (!amount || Number(amount) <= 0) {
-      toast.error("Invalid amount");
+      toast.error("Please enter a valid amount");
       return;
     }
 
     setLoading(true);
     try {
-      await axiosInstance.post("/payments/request", { amount });
-      toast.success("Payment request submitted. Admin will verify soon.");
-      setAmount("");
-      setShowQr(false);
+      // Create order from backend
+      const res = await axiosInstance.post("/payments/create-order", {
+        amount,
+      });
+
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID, // Frontend key
+        amount: res.data.amount,
+        currency: "INR",
+        name: "ValoPlay",
+        description: "Wallet Top-up",
+        order_id: res.data.id,
+        handler: async (response) => {
+          // Confirm payment success to backend
+          await axiosInstance.post("/payments/verify-payment", {
+            paymentId: response.razorpay_payment_id,
+            amount: res.data.amount / 100,
+          });
+          toast.success("Payment successful, wallet credited!");
+          setAmount("");
+        },
+        prefill: {
+          name: "Gamer",
+          email: "gamer@valoplay.com",
+        },
+        theme: {
+          color: "#EF4444",
+        },
+      };
+
+      const razor = new window.Razorpay(options);
+      razor.open();
     } catch (err) {
-      toast.error("Failed to submit request.");
+      console.error(err);
+      toast.error("Failed to initiate payment.");
     } finally {
       setLoading(false);
     }
-  };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      checkExpiration();
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [createdAt]);
-
-  const formatTime = (seconds) => {
-    if (!seconds) return "--:--";
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, "0")}:${secs
-      .toString()
-      .padStart(2, "0")}`;
   };
 
   return (
     <div className="min-h-screen bg-gray-900 py-8 px-4">
       <div className="max-w-md mx-auto">
         <div className="bg-gradient-to-b from-gray-800 to-gray-900 rounded-xl shadow-2xl border border-gray-700 overflow-hidden">
-          <div className="bg-red-600 px-6 py-4 flex items-center justify-between">
-            <div className="flex items-center">
-              <Wallet className="text-white mr-2" size={24} />
-              <h2 className="text-white text-2xl font-bold">Add Money</h2>
-            </div>
-            {showQr && timeLeft && (
-              <div className="flex items-center bg-black bg-opacity-30 px-3 py-1 rounded-full">
-                <Clock className="text-white mr-1" size={16} />
-                <span className="text-white text-sm font-medium">
-                  {formatTime(timeLeft)}
-                </span>
-              </div>
-            )}
+          <div className="bg-red-600 px-6 py-4 flex items-center">
+            <Wallet className="text-white mr-2" size={24} />
+            <h2 className="text-white text-2xl font-bold">Add Money</h2>
           </div>
 
           <div className="p-6 space-y-6">
-            {!showQr ? (
-              <>
-                <div className="space-y-2">
-                  <label className="block text-gray-400 text-sm font-medium">
-                    Enter Amount
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-3 text-gray-500 font-semibold">
-                      ₹
-                    </span>
-                    <input
-                      type="number"
-                      value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
-                      placeholder="0"
-                      className="pl-8 pr-4 py-3 w-full rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-green-500 focus:ring-1 focus:ring-green-500"
-                    />
-                  </div>
+            <div className="space-y-2">
+              <label className="block text-gray-400 text-sm font-medium">
+                Enter Amount
+              </label>
+              <div className="relative">
+                <span className="absolute left-3 top-3 text-gray-500 font-semibold">
+                  ₹
+                </span>
+                <input
+                  type="number"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  placeholder="0"
+                  className="pl-8 pr-4 py-3 w-full rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-red-500 focus:ring-1 focus:ring-red-500"
+                />
+              </div>
 
-                  <div className="grid grid-cols-4 gap-2 mt-3">
-                    {quickAmounts.map((value) => (
-                      <button
-                        key={value}
-                        onClick={() => setAmount(value.toString())}
-                        className="bg-gray-700 hover:bg-gray-600 py-2 px-3 rounded-lg text-white font-medium transition-colors"
-                      >
-                        ₹{value}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+              <div className="grid grid-cols-4 gap-2 mt-3">
+                {quickAmounts.map((value) => (
+                  <button
+                    key={value}
+                    onClick={() => setAmount(value.toString())}
+                    className="bg-gray-700 hover:bg-gray-600 py-2 px-3 rounded-lg text-white font-medium transition-colors"
+                  >
+                    ₹{value}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-                <button
-                  onClick={handleGenerateQR}
-                  className="w-full bg-red-600 text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors"
-                >
+            <button
+              onClick={handlePayment}
+              disabled={loading}
+              className="w-full bg-red-600 text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors"
+            >
+              {loading ? (
+                "Processing..."
+              ) : (
+                <>
                   <CreditCard size={18} />
-                  <span>Generate Payment QR</span>
-                </button>
-              </>
-            ) : (
-              <>
-                <div className="flex flex-col items-center space-y-4">
-                  <h3 className="text-xl font-medium text-white">
-                    Scan to Pay ₹{amount}
-                  </h3>
-
-                  {qrExpired ? (
-                    <div className="text-red-500 font-medium">
-                      QR Code expired!
-                    </div>
-                  ) : (
-                    <div className="bg-white p-4 rounded-lg">
-                      <QRCode
-                        value={upiLink}
-                        bgColor="#ffffff"
-                        fgColor="#000000"
-                        size={180}
-                      />
-                    </div>
-                  )}
-
-                  <div className="text-gray-400 text-sm text-center mt-2">
-                    Scan with any UPI app to make payment
-                  </div>
-                </div>
-
-                <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
-                  <div className="grid grid-cols-2 gap-3 text-sm">
-                    <div className="text-gray-400">UPI ID:</div>
-                    <div className="text-white font-medium">
-                      shantanuk436@okaxis
-                    </div>
-                    <div className="text-gray-400">Name:</div>
-                    <div className="text-white font-medium">ValoPlay</div>
-                    <div className="text-gray-400">Amount:</div>
-                    <div className="text-white font-medium">₹{amount}</div>
-                  </div>
-                </div>
-
-                <button
-                  onClick={handleSubmitAfterPayment}
-                  disabled={loading}
-                  className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors"
-                >
-                  {loading ? (
-                    "Processing..."
-                  ) : (
-                    <>
-                      I've Paid & Submit Request <ArrowRight size={18} />
-                    </>
-                  )}
-                </button>
-              </>
-            )}
+                  <span>Pay Now</span>
+                </>
+              )}
+            </button>
           </div>
         </div>
       </div>
